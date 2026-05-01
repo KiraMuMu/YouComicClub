@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人中心 · 悠行动漫社</title>
+  <link rel="icon" href="../assets/images/club-logo.png" type="image/png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/theme.js"></script>
+  <style>
+    .page-hero {
+      padding: 60px 24px 40px;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .page-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, #ffffff 0%, #a8d5ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .content-area {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .profile-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 16px;
+      border: 3px solid var(--primary);
+    }
+
+    .profile-username {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .profile-type {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(91,143,212,0.1);
+      border: 1px solid rgba(91,143,212,0.2);
+      color: var(--primary);
+      font-size: 0.85rem;
+    }
+
+    .profile-type.bangumi {
+      background: rgba(240,145,153,0.1);
+      border-color: rgba(240,145,153,0.2);
+      color: #F09199;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .stat-box {
+      padding: 20px;
+      background: rgba(91,143,212,0.05);
+      border-radius: var(--radius-sm);
+    }
+
+    .stat-box-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .stat-box-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+
+    .anime-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .anime-list-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: rgba(91,143,212,0.05);
+      border-radius: var(--radius-sm);
+    }
+
+    .anime-list-cover {
+      width: 60px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .anime-list-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .anime-list-title {
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .anime-list-status {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .login-prompt {
+      text-align: center;
+      padding: 80px 24px;
+    }
+
+    .login-prompt h2 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+
+    .login-prompt p {
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .nav-auth {
+      position: relative;
+    }
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .profile-card { padding: 24px; }
+      .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .stat-box { padding: 16px 8px; }
+      .stat-box-number { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="bg-stars" aria-hidden="true"></div>
+
+<nav class="nav">
+  <a class="nav-logo" href="../index.html">
+    <img src="../assets/images/club-logo.png" alt="悠行动漫社">
+    <span>悠行动漫社</span>
+  </a>
+  <button class="nav-toggle" id="navToggle" aria-label="菜单">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../index.html">首页</a></li>
+    <li><a href="about.html">社团介绍</a></li>
+    <li><a href="magazine.html">社刊</a></li>
+    <li><a href="activities.html">线下活动</a></li>
+    <li><a href="anime-schedule.html">季番时间表</a></li>
+    <li><button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+      <span class="icon-moon">🌙</span><span class="icon-sun">☀️</span>
+    </button></li>
+    <li class="nav-auth">
+      <button id="auth-login-btn" class="btn btn-sm btn-primary">登录</button>
+      <div id="auth-user-info" class="auth-user-info" style="display:none;">
+        <img id="auth-avatar" class="auth-avatar" src="" alt="头像">
+        <span id="auth-username" class="auth-username"></span>
+        <div class="auth-dropdown">
+          <div class="auth-dropdown-item" onclick="location.href='profile.html'">个人中心</div>
+          <div class="auth-dropdown-item" id="auth-logout-btn">退出登录</div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+  <div class="page-hero">
+    <h1 class="page-title">个人中心</h1>
+  </div>
+
+  <div class="content-area">
+    <!-- 未登录提示 -->
+    <div id="loginPrompt" class="login-prompt" style="display:none;">
+      <h2>请先登录</h2>
+      <p>登录后可以同步追番状态、参与讨论等</p>
+      <button class="btn btn-primary" onclick="auth.showLoginModal()">立即登录</button>
+    </div>
+
+    <!-- 已登录内容 -->
+    <div id="profileContent" style="display:none;">
+      <div class="profile-card">
+        <img id="profileAvatar" class="profile-avatar" src="" alt="头像">
+        <div id="profileUsername" class="profile-username"></div>
+        <div id="profileType" class="profile-type"></div>
+        
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div id="statWatching" class="stat-box-number">0</div>
+            <div class="stat-box-label">追番中</div>
+          </div>
+          <div class="stat-box">
+            <div id="statCompleted" class="stat-box-number">0</div>
+            <div class="stat-box-label">已看完</div>
+          </div>
+          <div class="stat-box">
+            <div id="statPlanned" class="stat-box-number">0</div>
+            <div class="stat-box-label">想看</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">📺 我的追番</div>
+        <div id="animeList" class="anime-list">
+          <div class="empty-state">
+            <div class="empty-state-icon">📺</div>
+            <div>还没有追番记录</div>
+            <div style="font-size:0.85rem;margin-top:8px;">去<a href="anime-schedule.html" style="color:var(--primary)">季番时间表</a>添加吧</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>© 2025–2026 悠行动漫社官方网站 | 感谢访问!</p>
+  <p style="margin-top: 6px;">由 橙の慕丶 建立&维护，由 Cloudflare 提供支持</p>
+</footer>
+
+<!-- 账号系统 -->
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/auth-modal.js"></script>
+
+<script>
+  // 导航汉堡菜单
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+  // 页面加载后检查登录状态
+  async function initProfile() {
+    const user = await auth.fetchUser();
+    
+    if (!user) {
+      document.getElementById('loginPrompt').style.display = 'block';
+      document.getElementById('profileContent').style.display = 'none';
+      return;
+    }
+
+    document.getElementById('loginPrompt').style.display = 'none';
+    document.getElementById('profileContent').style.display = 'block';
+
+    // 填充用户信息
+    document.getElementById('profileAvatar').src = user.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`;
+    document.getElementById('profileUsername').textContent = user.username;
+    
+    const typeEl = document.getElementById('profileType');
+    if (user.bangumiUserId) {
+      typeEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#F09199"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="10">B</text></svg> Bangumi 用户';
+      typeEl.classList.add('bangumi');
+    } else {
+      typeEl.textContent = '本地账号';
+    }
+
+    // 加载追番数据
+    loadAnimeStats();
+  }
+
+  async function loadAnimeStats() {
+    try {
+      const animeList = await animeTracker.getAllStatuses();
+      
+      const watching = animeList.filter(a => a.status === 'watching').length;
+      const completed = animeList.filter(a => a.status === 'completed').length;
+      const planned = animeList.filter(a => a.status === 'plan_to_watch').length;
+
+      document.getElementById('statWatching').textContent = watching;
+      document.getElementById('statCompleted').textContent = completed;
+      document.getElementById('statPlanned').textContent = planned;
+
+      // 显示追番列表
+      if (animeList.length > 0) {
+        const listEl = document.getElementById('animeList');
+        listEl.innerHTML = animeList.map(item => `
+          <div class="anime-list-item">
+            <img class="anime-list-cover" src="https://api.bgm.tv/v0/subjects/${item.animeId}/image?type=small" alt="" onerror="this.src='../assets/images/club-logo.png'">
+            <div class="anime-list-info">
+              <div class="anime-list-title">番剧 #${item.animeId}</div>
+              <div class="anime-list-status">${getStatusText(item.status)} ${item.score > 0 ? '· 评分 ' + item.score : ''}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+    } catch (e) {
+      console.error('加载追番数据失败:', e);
+    }
+  }
+
+  function getStatusText(status) {
+    const map = {
+      'watching': '追番中',
+      'completed': '已看完',
+      'on_hold': '搁置',
+      'dropped': '弃番',
+      'plan_to_watch': '想看'
+    };
+    return map[status] || status;
+  }
+
+  // 等待 auth 初始化完成
+  setTimeout(initProfile, 500);
+</script>
+
+</body>
+</html>

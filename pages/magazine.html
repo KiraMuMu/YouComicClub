@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>悠小咕快报 · 悠行动漫社</title>
+  <link rel="icon" href="../assets/images/club-logo.png" type="image/png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/theme.js"></script>
+  <script src="../data/magazine.js"></script>
+  <style>
+    .page-hero {
+      padding: 60px 24px 40px;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* 社刊logo + 标题 */
+    .mag-header-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .mag-header-logo img {
+      height: 80px;
+      filter: drop-shadow(0 4px 20px rgba(91,143,212,0.6));
+      animation: floatLogo 3s ease-in-out infinite;
+    }
+
+    @keyframes floatLogo {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .page-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, #ffffff 0%, #a8d5ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-desc {
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 12px auto 0;
+      font-size: 0.95rem;
+    }
+
+    .content-area {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* 提示条 */
+    .notice-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background: rgba(255,155,122,0.1);
+      border: 1px solid rgba(255,155,122,0.2);
+      border-radius: var(--radius-sm);
+      color: rgba(255,200,160,0.9);
+      font-size: 0.85rem;
+      margin-bottom: 32px;
+    }
+
+    /* 社刊卡片网格 */
+    .magazine-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .mag-card {
+      cursor: pointer;
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .mag-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(91,143,212,0.5);
+      box-shadow: 0 20px 60px rgba(0,10,50,0.6);
+    }
+
+    .mag-cover {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      display: block;
+      background: linear-gradient(145deg, rgba(20,50,120,0.6), rgba(50,20,100,0.4));
+    }
+
+    .mag-cover-placeholder {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, rgba(20,50,120,0.5), rgba(50,20,100,0.3));
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      gap: 12px;
+    }
+
+    .mag-cover-placeholder .placeholder-icon {
+      font-size: 3rem;
+      opacity: 0.5;
+    }
+
+    .mag-info {
+      padding: 20px;
+    }
+
+    .mag-issue {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .mag-issue-num {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .mag-season {
+      font-size: 0.78rem;
+      padding: 2px 10px;
+      background: rgba(91,143,212,0.15);
+      color: var(--accent-2);
+      border-radius: 50px;
+    }
+
+    .mag-theme {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .mag-click-hint {
+      font-size: 0.78rem;
+      color: rgba(91,143,212,0.6);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 模态框内容 */
+    .modal-issue-badge {
+      font-size: 0.82rem;
+      padding: 3px 12px;
+      background: rgba(91,143,212,0.15);
+      color: var(--accent-2);
+      border-radius: 50px;
+      margin-left: 12px;
+    }
+
+    .modal-cover-wrap {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .modal-cover-img {
+      width: 140px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid rgba(91,143,212,0.2);
+    }
+
+    .modal-cover-placeholder {
+      width: 140px;
+      aspect-ratio: 3/4;
+      flex-shrink: 0;
+      border-radius: 8px;
+      border: 1px dashed rgba(91,143,212,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--text-muted);
+    }
+
+    .modal-meta { flex: 1; }
+    .modal-meta h4 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .modal-meta-item {
+      display: flex;
+      gap: 8px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .modal-meta-item span:first-child {
+      color: var(--accent-2);
+      min-width: 48px;
+    }
+
+    .modal-sections { margin-top: 20px; }
+    .modal-sections h5 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--accent-2);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .section-item {
+      padding: 14px 16px;
+      background: rgba(91,143,212,0.07);
+      border: 1px solid rgba(91,143,212,0.12);
+      border-radius: var(--radius-sm);
+    }
+
+    .section-item-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .section-item-summary {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .no-download-notice {
+      text-align: center;
+      padding: 16px;
+      margin-top: 20px;
+      background: rgba(255,155,122,0.08);
+      border: 1px dashed rgba(255,155,122,0.2);
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      color: rgba(255,200,160,0.7);
+    }
+
+    /* 固定关闭按钮 */
+    .modal-close-fixed {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(30, 40, 70, 0.9);
+      backdrop-filter: blur(10px);
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .modal-close-fixed:hover {
+      background: rgba(91,143,212,0.3);
+      color: var(--text-main);
+      transform: scale(1.05);
+    }
+
+    .modal-overlay.open .modal-close-fixed {
+      display: flex;
+    }
+
+    .modal-overlay:not(.open) .modal-close-fixed {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .modal-close-fixed {
+        top: 12px;
+        right: 12px;
+        width: 40px;
+        height: 40px;
+      }
+
+    /* 导航栏登录 */
+    .nav-auth {
+      position: relative;
+    }
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+      .modal-cover-wrap { flex-direction: column; }
+      .modal-cover-img, .modal-cover-placeholder { width: 100%; aspect-ratio: auto; height: 200px; }
+      .magazine-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .content-area { padding-left: 16px; padding-right: 16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="bg-stars" aria-hidden="true"></div>
+
+<!-- 导航 -->
+<nav class="nav">
+  <a class="nav-logo" href="../index.html">
+    <img src="../assets/images/club-logo.png" alt="悠行动漫社">
+    <span>悠行动漫社</span>
+  </a>
+  <button class="nav-toggle" id="navToggle" aria-label="菜单">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../index.html">首页</a></li>
+    <li><a href="about.html">社团介绍</a></li>
+    <li><a href="magazine.html" class="active">社刊</a></li>
+    <li><a href="activities.html">线下活动</a></li>
+    <li><a href="anime-schedule.html">季番时间表</a></li>
+    <li><button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+      <span class="icon-moon">🌙</span><span class="icon-sun">☀️</span>
+    </button></li>
+    <li class="nav-auth">
+      <button id="auth-login-btn" class="btn btn-sm btn-primary">登录</button>
+      <div id="auth-user-info" class="auth-user-info" style="display:none;">
+        <img id="auth-avatar" class="auth-avatar" src="" alt="头像">
+        <span id="auth-username" class="auth-username"></span>
+        <div class="auth-dropdown">
+          <div class="auth-dropdown-item" onclick="location.href='profile.html'">个人中心</div>
+          <div class="auth-dropdown-item" id="auth-logout-btn">退出登录</div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+  <div class="page-hero">
+    <div class="mag-header-logo">
+      <img src="../assets/images/club-logo.png" alt="悠行动漫社">
+    </div>
+    <h1 class="page-title">悠小咕快报</h1>
+    <p class="page-desc">悠行动漫社社刊，记录每一季的精彩故事</p>
+  </div>
+
+  <div class="content-area">
+
+    <div class="notice-bar">
+      <span>🔒</span>
+      <span>社刊不提供PDF下载。感谢理解！</span>
+    </div>
+
+    <div class="magazine-grid" id="magazineGrid">
+      <!-- 由JS渲染 -->
+    </div>
+
+  </div>
+</div>
+
+<!-- 详情模态框 -->
+<div class="modal-overlay" id="magModal">
+  <button class="modal-close-fixed" id="modalClose" aria-label="关闭">✕</button>
+  <div class="modal-box">
+    <div class="modal-header">
+      <div style="display:flex;align-items:center">
+        <span style="font-size:1rem;font-weight:700;color:var(--text-main)" id="modalTitle">—</span>
+        <span class="modal-issue-badge" id="modalBadge">—</span>
+      </div>
+    </div>
+    <div class="modal-body" id="modalBody">—</div>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>© 2025–2026 悠行动漫社官方网站 &nbsp;|&nbsp; 感谢访问!</p>
+  <p style="margin-top: 6px;">由 橙の慕丶 建立&维护，由 Cloudflare 提供支持</p>
+</footer>
+
+<!-- 账号系统 -->
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/auth-modal.js"></script>
+
+<script>
+  // 导航
+  const toggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // 渲染社刊卡片
+  const grid = document.getElementById('magazineGrid');
+  MAGAZINE_DATA.forEach(mag => {
+    const card = document.createElement('div');
+    card.className = 'mag-card fade-in';
+    const coverHtml = mag.cover
+      ? `<img class="mag-cover" src="${mag.cover}" alt="${mag.issue}封面" loading="lazy">`
+      : `<div class="mag-cover-placeholder"><span class="placeholder-icon">📖</span><span>封面待补充</span></div>`;
+
+    card.innerHTML = `
+      ${coverHtml}
+      <div class="mag-info">
+        <div class="mag-issue">
+          <span class="mag-issue-num">${mag.issue}</span>
+          <span class="mag-season">${mag.season}</span>
+        </div>
+        <div class="mag-theme">主题：${mag.theme}</div>
+        <div class="mag-click-hint">🔍 点击查看详情</div>
+      </div>
+    `;
+    card.addEventListener('click', () => openModal(mag));
+    grid.appendChild(card);
+  });
+
+  // 打开模态框
+  function openModal(mag) {
+    document.getElementById('modalTitle').textContent = mag.issue;
+    document.getElementById('modalBadge').textContent = mag.season;
+
+    const coverHtml = mag.cover
+      ? `<img class="modal-cover-img" src="${mag.cover}" alt="${mag.issue}封面">`
+      : `<div class="modal-cover-placeholder">📖</div>`;
+
+    const sectionsHtml = mag.sections.map(s => `
+      <div class="section-item">
+        <div class="section-item-title">◆ ${s.title}</div>
+        <div class="section-item-summary">${s.summary}</div>
+      </div>
+    `).join('');
+
+    document.getElementById('modalBody').innerHTML = `
+      <div class="modal-cover-wrap">
+        ${coverHtml}
+        <div class="modal-meta">
+          <h4>${mag.issue}</h4>
+          <div class="modal-meta-item"><span>季度</span><span>${mag.season}</span></div>
+          <div class="modal-meta-item"><span>日期</span><span>${mag.date}</span></div>
+          <div class="modal-meta-item"><span>主题</span><span>${mag.theme}</span></div>
+          ${mag.note ? `<div class="modal-meta-item"><span>备注</span><span>${mag.note}</span></div>` : ''}
+        </div>
+      </div>
+      <div class="modal-sections">
+        <h5>📋 内容栏目</h5>
+        <div class="section-list">${sectionsHtml}</div>
+      </div>
+      <div class="no-download-notice">
+        🔒 社刊为悠行动漫社知识产品，不提供下载，敬请理解
+      </div>
+    `;
+
+    document.getElementById('magModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // 关闭模态框
+  function closeModal() {
+    document.getElementById('magModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('magModal').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // 滚动动画
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = `opacity 0.5s ease ${i * 0.08}s, transform 0.5s ease ${i * 0.08}s`;
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

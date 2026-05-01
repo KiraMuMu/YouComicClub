@@ -1,0 +1,16 @@
+{
+  "name": "youcomicclub-auth",
+  "version": "1.0.0",
+  "description": "悠行动漫社账号系统 Worker",
+  "main": "auth.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "keywords": ["cloudflare", "worker", "auth"],
+  "author": "橙の慕丶",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

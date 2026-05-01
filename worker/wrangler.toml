@@ -1,0 +1,17 @@
+name = "youcomicclub-auth"
+main = "auth.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+FRONTEND_URL = "https://youcomicclub.pages.dev"
+
+# KV 命名空间（只需要1个，用key前缀区分）
+[[kv_namespaces]]
+binding = "AUTH_KV"
+id = "766cdaf7f6314f1c8a9cef6abe83b74c"
+preview_id = "c015f8394a4a438a9984bbaf9b4101fa"
+
+# 生产环境变量（需要 wrangler secret put 设置）
+# JWT_SECRET - JWT 签名密钥
+# BANGUMI_CLIENT_ID - Bangumi OAuth App ID  
+# BANGUMI_CLIENT_SECRET - Bangumi OAuth App Secret

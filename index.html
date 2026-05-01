@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>悠行动漫社We are here!</title>
+  <link rel="icon" href="assets/club-logo.png" type="image/png">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/theme.js"></script>
+  <style>
+    /* ========== 主页专属样式 ========== */
+
+    /* 英雄区 */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 24px;
+      overflow: hidden;
+    }
+
+    /* 背景图：新海诚风格天空 */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=1920&q=80') center/cover no-repeat;
+      filter: brightness(0.45) saturate(1.3);
+      transform: scale(1.03);
+      transition: transform 12s ease;
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg,
+          rgba(5, 10, 30, 0.3) 0%,
+          rgba(5, 10, 30, 0.1) 40%,
+          rgba(5, 10, 30, 0.7) 80%,
+          rgba(5, 10, 30, 0.95) 100%
+        ),
+        linear-gradient(135deg, rgba(20, 60, 140, 0.3) 0%, transparent 60%);
+    }
+
+    /* 光晕效果 */
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(91, 143, 212, 0.18) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 780px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 50px;
+      background: rgba(91, 143, 212, 0.15);
+      border: 1px solid rgba(91, 143, 212, 0.35);
+      color: var(--accent-2);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease 0.1s both;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #5BFF9B;
+      box-shadow: 0 0 8px #5BFF9B;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 8vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      animation: fadeInUp 0.6s ease 0.2s both;
+    }
+
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, #ffffff 0%, #a8d5ff 45%, #5B8FD4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-title .accent-text {
+      background: linear-gradient(135deg, #FF9B7A 0%, #FFD580 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+      color: rgba(200, 225, 255, 0.75);
+      max-width: 500px;
+      margin: 0 auto 40px;
+      animation: fadeInUp 0.6s ease 0.3s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.6s ease 0.4s both;
+    }
+
+    /* 向下滚动指示 */
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.75rem;
+      animation: fadeInUp 0.6s ease 0.8s both;
+    }
+
+    .hero-scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(180deg, transparent, rgba(91, 143, 212, 0.6));
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50% { transform: scaleY(0.5); opacity: 0.4; }
+    }
+
+    /* ========== 功能板块入口 ========== */
+    .sections-area {
+      position: relative;
+      z-index: 10;
+      padding: 80px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .nav-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .nav-card {
+      position: relative;
+      display: block;
+      text-decoration: none;
+      padding: 32px 28px;
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+      transition: var(--transition);
+      group: true;
+    }
+
+    .nav-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--card-color, rgba(91,143,212,0.08)) 0%, transparent 70%);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .nav-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(91, 143, 212, 0.5);
+      box-shadow: 0 20px 60px rgba(0, 10, 50, 0.6), 0 0 0 1px rgba(91,143,212,0.2);
+    }
+
+    .nav-card:hover::before { opacity: 1; }
+
+    .nav-card-icon {
+      font-size: 2.4rem;
+      margin-bottom: 16px;
+      display: block;
+      filter: drop-shadow(0 4px 12px rgba(91,143,212,0.4));
+    }
+
+    .nav-card-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-card-desc {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .nav-card-arrow {
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      transition: var(--transition);
+    }
+
+    .nav-card:hover .nav-card-arrow {
+      color: var(--primary);
+      transform: translateY(-50%) translateX(4px);
+    }
+
+    /* 卡片颜色变体 */
+    .nav-card[data-color="blue"] { --card-color: rgba(91,143,212,0.12); }
+    .nav-card[data-color="orange"] { --card-color: rgba(255,155,122,0.10); }
+    .nav-card[data-color="purple"] { --card-color: rgba(180,120,255,0.10); }
+    .nav-card[data-color="green"] { --card-color: rgba(91,212,155,0.10); }
+
+    /* 导航栏登录区域 */
+    .nav-auth {
+      position: relative;
+    }
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+
+    /* ========== 社团简介区 ========== */
+    .intro-area {
+      position: relative;
+      z-index: 10;
+      padding: 0 24px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .intro-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      padding: 48px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(12px);
+    }
+
+    .intro-text h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #e8f4ff 0%, #a8d5ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .intro-text p {
+      color: var(--text-muted);
+      line-height: 1.9;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+    }
+
+    .intro-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .stat-item {
+      padding: 20px;
+      background: rgba(91, 143, 212, 0.08);
+      border: 1px solid rgba(91, 143, 212, 0.15);
+      border-radius: var(--radius-sm);
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #a8d5ff, #5B8FD4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      margin-top: 4px;
+    }
+
+    /* ========== 联系方式占位 ========== */
+    .contact-area {
+      position: relative;
+      z-index: 10;
+      padding: 0 24px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .contact-item {
+      padding: 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      text-align: center;
+      backdrop-filter: blur(12px);
+    }
+
+    .contact-item-icon { font-size: 1.8rem; margin-bottom: 12px; }
+    .contact-item-label { color: var(--text-muted); font-size: 0.82rem; margin-bottom: 6px; }
+    .contact-item-value {
+      color: var(--text-muted);
+      font-style: italic;
+      font-size: 0.88rem;
+    }
+
+    /* ========== 响应式 ========== */
+    @media (max-width: 900px) {
+      .intro-card {
+        grid-template-columns: 1fr;
+        padding: 32px 24px;
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero-title { font-size: 2.4rem; }
+      .hero-actions { gap: 12px; }
+      .sections-area, .intro-area, .contact-area { padding-left: 16px; padding-right: 16px; }
+      .nav-cards { grid-template-columns: 1fr; gap: 12px; }
+      .nav-card { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 背景 -->
+<div class="bg-stars" aria-hidden="true"></div>
+
+<!-- 导航栏 -->
+<nav class="nav">
+  <a class="nav-logo" href="index.html">
+    <img src="assets/images/club-logo.png" alt="悠行动漫社">
+    <span>悠行动漫社</span>
+  </a>
+  <button class="nav-toggle" id="navToggle" aria-label="菜单">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" class="active">首页</a></li>
+    <li><a href="pages/about.html">社团介绍</a></li>
+    <li><a href="pages/magazine.html">社刊</a></li>
+    <li><a href="pages/activities.html">线下活动</a></li>
+    <li><a href="pages/anime-schedule.html">季番时间表</a></li>
+    <li><button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+      <span class="icon-moon">🌙</span><span class="icon-sun">☀️</span>
+    </button></li>
+    <li class="nav-auth">
+      <button id="auth-login-btn" class="btn btn-sm btn-primary">登录</button>
+      <div id="auth-user-info" class="auth-user-info" style="display:none;">
+        <img id="auth-avatar" class="auth-avatar" src="" alt="头像">
+        <span id="auth-username" class="auth-username"></span>
+        <div class="auth-dropdown">
+          <div class="auth-dropdown-item" onclick="location.href='pages/profile.html'">个人中心</div>
+          <div class="auth-dropdown-item" id="auth-logout-btn">退出登录</div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- ===== 英雄区 ===== -->
+  <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-glow" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">✦ 悠行动漫社 ✦</div>
+
+      <h1 class="hero-title">
+        <span class="gradient-text">悠游世纪</span><br>
+        <span class="accent-text">一起同行</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        欢迎来到悠行动漫社的专属空间<br>
+        季番时间表 · 社刊回顾 · 活动记录，都在这里
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="pages/anime-schedule.html">🎬 看本季新番</a>
+        <a class="btn btn-ghost" href="pages/magazine.html">📖 浏览社刊</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>向下滚动</span>
+    </div>
+  </section>
+
+  <!-- ===== 功能板块入口 ===== -->
+  <section class="sections-area">
+    <div class="section-header">
+      <h2 class="section-title">社团功能</h2>
+      <p class="section-subtitle">点击进入各板块</p>
+    </div>
+
+    <div class="nav-cards">
+      <a class="nav-card fade-in" href="pages/about.html" data-color="blue" style="animation-delay:0.1s">
+        <span class="nav-card-icon">🏮</span>
+        <div class="nav-card-title">社团介绍</div>
+        <div class="nav-card-desc">了解悠行动漫社的成立历程、部门构成、高层名单以及社团文化</div>
+        <span class="nav-card-arrow">→</span>
+      </a>
+
+      <a class="nav-card fade-in" href="pages/magazine.html" data-color="purple" style="animation-delay:0.2s">
+        <span class="nav-card-icon">📖</span>
+        <div class="nav-card-title">悠小咕快报</div>
+        <div class="nav-card-desc">社刊《悠小咕快报》各期回顾，展示封面与精彩内容节选</div>
+        <span class="nav-card-arrow">→</span>
+      </a>
+
+      <a class="nav-card fade-in" href="pages/activities.html" data-color="green" style="animation-delay:0.3s">
+        <span class="nav-card-icon">🎉</span>
+        <div class="nav-card-title">线下活动</div>
+        <div class="nav-card-desc">迎新大会、元旦晚会等线下活动记录，留住每一段美好回忆</div>
+        <span class="nav-card-arrow">→</span>
+      </a>
+
+      <a class="nav-card fade-in" href="pages/anime-schedule.html" data-color="orange" style="animation-delay:0.4s">
+        <span class="nav-card-icon">🗓️</span>
+        <div class="nav-card-title">季番时间表</div>
+        <div class="nav-card-desc">2026年春季新番一览，按星期整理，快速找到想追的番</div>
+        <span class="nav-card-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== 社团简介 ===== -->
+  <section class="intro-area">
+    <div class="intro-card card fade-in">
+      <div class="intro-text">
+        <h2>关于悠行动漫社</h2>
+        <p>
+          <!-- 慕慕自行填写社团介绍内容 -->
+          这里是社团介绍文字，请自行修改填充。可以包括社团的成立背景、宗旨、
+          主要活动形式等内容。
+        </p>
+        <p>
+          这里可以继续补充第二段介绍文字，例如社团的特色、成就或展望。
+        </p>
+        <a class="btn btn-ghost" href="pages/about.html" style="margin-top: 16px;">了解更多 →</a>
+      </div>
+
+      <div class="intro-stats">
+        <div class="stat-item">
+          <span class="stat-num">18+</span>
+          <div class="stat-label">届社团历史</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">20+</span>
+          <div class="stat-label">期社刊出版</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">N+</span>
+          <div class="stat-label">活跃成员</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">∞</span>
+          <div class="stat-label">热爱动漫</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 联系方式占位 ===== -->
+  <section class="contact-area">
+    <div class="section-header">
+      <h2 class="section-title">联系我们</h2>
+      <p class="section-subtitle">加入我们，一起追番看展！</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-item card">
+        <div class="contact-item-icon">👥</div>
+        <div class="contact-item-label">QQ群</div>
+        <div class="contact-item-value">（待填充）</div>
+      </div>
+      <div class="contact-item card">
+        <div class="contact-item-icon">📧</div>
+        <div class="contact-item-label">联系邮箱</div>
+        <div class="contact-item-value">（待填充）</div>
+      </div>
+      <div class="contact-item card">
+        <div class="contact-item-icon">📍</div>
+        <div class="contact-item-label">活动地点</div>
+        <div class="contact-item-value">（待填充）</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+  <p>© 2025–2026 悠行动漫社官方网站 &nbsp;|&nbsp; 感谢访问!</p>
+  <p style="margin-top: 6px;">由 橙の慕丶 建立&维护，由 Cloudflare 提供支持</p>
+</footer>
+
+<!-- 账号系统 -->
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/auth-modal.js"></script>
+
+<script>
+  // 导航汉堡菜单
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+  // 视差背景
+  const heroBg = document.getElementById('heroBg');
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    if (heroBg) heroBg.style.transform = `scale(1.03) translateY(${scrolled * 0.3}px)`;
+  }, { passive: true });
+
+  // 滚动显示动画
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>

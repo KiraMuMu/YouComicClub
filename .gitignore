@@ -1,0 +1,26 @@
+# Node modules
+node_modules/
+package-lock.json
+
+# Wrangler files
+.wrangler/
+wrangler.toml.bak
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
