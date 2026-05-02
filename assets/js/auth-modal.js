@@ -273,6 +273,18 @@ const authStyles = `
   gap: 8px;
   cursor: pointer;
   position: relative;
+  padding-bottom: 8px;         /* 桥接区域，消除死亡间隙 */
+}
+
+/* 用伪元素扩大 hover 触发范围，防止下拉菜单闪退 */
+.auth-user-info::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8px;
+  cursor: pointer;
 }
 
 .auth-avatar {
@@ -291,7 +303,7 @@ const authStyles = `
 
 .auth-dropdown {
   position: absolute;
-  top: calc(100% + 8px);
+  top: 100%;
   right: 0;
   background: rgba(12, 28, 70, 0.98);
   border: 1px solid rgba(91, 143, 212, 0.3);
