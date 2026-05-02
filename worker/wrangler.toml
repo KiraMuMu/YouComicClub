@@ -1,9 +1,9 @@
-name = "youcomicclub-auth"
+name = "youclub-auth"
 main = "auth.js"
 compatibility_date = "2024-01-01"
 
 [vars]
-FRONTEND_URL = "https://youcomicclub.pages.dev"
+FRONTEND_URL = "https://youclub.kiramu.workers.dev"
 
 # KV 命名空间（只需要1个，用key前缀区分）
 [[kv_namespaces]]

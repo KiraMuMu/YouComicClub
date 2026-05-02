@@ -3,7 +3,7 @@
  * 支持：本地账号 + Bangumi OAuth
  */
 
-const API_BASE_URL = 'https://youcomicclub-auth.3144076132.workers.dev' // Cloudflare Worker URL
+const API_BASE_URL = 'https://youclub-auth.kiramu.workers.dev' // Cloudflare Worker URL
 
 class AuthManager {
   constructor() {

@@ -226,7 +226,7 @@ async function handleBangumiCallback(request, url, env) {
   await saveSession(env, token, { userId: user.id })
 
   // 重定向回前端，带上 token
-  const frontendUrl = new URL(env.FRONTEND_URL || 'https://youcomicclub.pages.dev')
+  const frontendUrl = new URL(env.FRONTEND_URL || 'https://youclub.kiramu.workers.dev')
   frontendUrl.pathname = '/pages/anime-schedule.html'
   frontendUrl.searchParams.set('token', token)
 

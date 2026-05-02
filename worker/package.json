@@ -1,5 +1,5 @@
 {
-  "name": "youcomicclub-auth",
+  "name": "youclub-auth",
   "version": "1.0.0",
   "description": "悠行动漫社账号系统 Worker",
   "main": "auth.js",
