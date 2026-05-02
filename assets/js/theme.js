@@ -13,11 +13,7 @@
   function getInitialTheme() {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved === 'light' || saved === 'dark') return saved;
-    // 跟随系统
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      return 'light';
-    }
-    return 'dark'; // 默认深色（新海诚风格）
+    return 'dark'; // 首次访问默认深色模式
   }
 
   /** 应用主题 */

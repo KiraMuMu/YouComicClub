@@ -201,6 +201,51 @@ body {
   font-size: 0.95rem;
 }
 
+/* ---- 子页面英雄区 ---- */
+.page-hero {
+  padding: 60px 24px 40px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.page-hero-tag {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 50px;
+  background: rgba(255, 155, 122, 0.12);
+  border: 1px solid rgba(255, 155, 122, 0.25);
+  color: #ffb89b;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.page-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, #e8f4ff 0%, #a8d5ff 50%, #7bb3f8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+/* 浅色主题 - 子页面英雄区 */
+[data-theme="light"] .page-hero-tag {
+  background: rgba(91, 143, 212, 0.1);
+  border-color: rgba(91, 143, 212, 0.25);
+  color: #3a6cb8;
+}
+
+[data-theme="light"] .page-title {
+  background: linear-gradient(135deg, #1a2a44 0%, #3a6cb8 50%, #5B8FD4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* ---- 通用按钮 ---- */
 .btn {
   display: inline-flex;

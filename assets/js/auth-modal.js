@@ -1,5 +1,5 @@
 /**
- * 登录/注册弹窗组件
+ * 登录/注册弹窗组件（主题感知版）
  */
 
 const authModalHTML = `
@@ -69,51 +69,44 @@ const authStyles = `
 .auth-modal {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background: rgba(0,0,0,0.6);
   backdrop-filter: blur(4px);
   z-index: 1000;
   align-items: center;
   justify-content: center;
 }
-
-.auth-modal.active {
-  display: flex;
-}
+.auth-modal.active { display: flex; }
 
 .auth-modal-content {
-  background: white;
-  border-radius: 16px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
   padding: 32px;
   width: 90%;
   max-width: 380px;
   position: relative;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  border: 1px solid var(--card-border);
 }
 
 .auth-modal-close {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 16px; right: 16px;
   background: none;
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #999;
+  color: var(--text-muted);
+  line-height: 1;
 }
-
-.auth-modal-close:hover {
-  color: #333;
-}
+.auth-modal-close:hover { color: var(--text-main); }
 
 .auth-tabs {
   display: flex;
   gap: 8px;
   margin-bottom: 24px;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid var(--card-border);
 }
 
 .auth-tab {
@@ -123,64 +116,38 @@ const authStyles = `
   background: none;
   font-size: 16px;
   cursor: pointer;
-  color: #666;
+  color: var(--text-muted);
   position: relative;
 }
-
-.auth-tab.active {
-  color: #F09199;
-  font-weight: 600;
-}
-
+.auth-tab.active { color: #F09199; font-weight: 600; }
 .auth-tab.active::after {
   content: '';
   position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
+  bottom: -2px; left: 0; right: 0;
   height: 2px;
   background: #F09199;
 }
 
-.auth-panel {
-  display: none;
-}
+.auth-panel { display: none; }
+.auth-panel.active { display: block; }
+.auth-panel h3 { margin: 0 0 20px 0; font-size: 20px; color: var(--text-main); }
 
-.auth-panel.active {
-  display: block;
-}
-
-.auth-panel h3 {
-  margin: 0 0 20px 0;
-  font-size: 20px;
-  color: #333;
-}
-
-.auth-form-group {
-  margin-bottom: 16px;
-}
-
+.auth-form-group { margin-bottom: 16px; }
 .auth-form-group input {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--card-border);
   border-radius: 8px;
   font-size: 15px;
   box-sizing: border-box;
+  background: rgba(255,255,255,0.06);
+  color: var(--text-main);
   transition: border-color 0.2s;
 }
+.auth-form-group input:focus { outline: none; border-color: #F09199; }
+.auth-form-group input::placeholder { color: var(--text-muted); }
 
-.auth-form-group input:focus {
-  outline: none;
-  border-color: #F09199;
-}
-
-.auth-error {
-  color: #e74c3c;
-  font-size: 13px;
-  margin-bottom: 12px;
-  min-height: 18px;
-}
+.auth-error { color: #e74c3c; font-size: 13px; margin-bottom: 12px; min-height: 18px; }
 
 .auth-btn {
   width: 100%;
@@ -191,96 +158,85 @@ const authStyles = `
   cursor: pointer;
   transition: all 0.2s;
 }
-
 .auth-btn-primary {
   background: linear-gradient(135deg, #F09199 0%, #e67e8a 100%);
   color: white;
   font-weight: 600;
 }
-
 .auth-btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(240, 145, 153, 0.4);
+  box-shadow: 0 4px 12px rgba(240,145,153,0.4);
 }
-
 .auth-btn-bangumi {
-  background: #f8f8f8;
-  color: #333;
-  border: 1px solid #ddd;
+  background: rgba(255,255,255,0.06);
+  color: var(--text-main);
+  border: 1px solid var(--card-border);
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
 }
-
-.auth-btn-bangumi:hover {
-  background: #f0f0f0;
-}
+.auth-btn-bangumi:hover { background: rgba(255,255,255,0.1); }
 
 .auth-divider {
   display: flex;
   align-items: center;
   margin: 20px 0;
-  color: #999;
+  color: var(--text-muted);
   font-size: 13px;
 }
-
-.auth-divider::before,
-.auth-divider::after {
+.auth-divider::before, .auth-divider::after {
   content: '';
   flex: 1;
   height: 1px;
-  background: #eee;
+  background: var(--card-border);
 }
+.auth-divider span { padding: 0 16px; }
 
-.auth-divider span {
-  padding: 0 16px;
-}
-
-/* 导航栏用户区域 */
+/* 导航栏用户区域（含死亡间隙修复） */
 .auth-user-info {
   display: none;
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  position: relative;
+  padding-bottom: 6px;
+}
+.auth-user-info::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  height: 6px;
+  pointer-events: auto;
 }
 
-.auth-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.auth-username {
-  font-size: 14px;
-  color: #333;
-}
+.auth-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+.auth-username { font-size: 14px; color: var(--text-main); }
 
 .auth-dropdown {
   position: absolute;
   top: 100%;
   right: 0;
-  background: white;
+  background: var(--card-bg);
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
   padding: 8px 0;
   min-width: 150px;
   display: none;
+  border: 1px solid var(--card-border);
+  z-index: 1001;
 }
-
-.auth-user-info:hover .auth-dropdown {
-  display: block;
-}
+.auth-user-info:hover .auth-dropdown,
+.auth-dropdown:hover { display: block; }
 
 .auth-dropdown-item {
   padding: 10px 16px;
   font-size: 14px;
   cursor: pointer;
+  color: var(--text-main);
 }
-
-.auth-dropdown-item:hover {
-  background: #f8f8f8;
-}
+.auth-dropdown-item:hover { background: rgba(91,143,212,0.1); }
 `;
 
 // 插入样式
