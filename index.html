@@ -10,7 +10,7 @@
   <style>
     /* ========== 主页专属样式 ========== */
 
-    /* 英雄�?*/
+    /* 英雄区 */
     .hero {
       position: relative;
       min-height: 100vh;
@@ -23,7 +23,7 @@
       overflow: hidden;
     }
 
-    /* 背景图：新海诚风格天�?*/
+    /* 背景图：新海诚风格天空 */
     .hero-bg {
       position: absolute;
       inset: 0;
@@ -188,8 +188,7 @@
       backdrop-filter: blur(12px);
       overflow: hidden;
       transition: var(--transition);
-      
-}
+    }
 
     .nav-card::before {
       content: '';
@@ -250,7 +249,7 @@
     .nav-card[data-color="purple"] { --card-color: rgba(180,120,255,0.10); }
     .nav-card[data-color="green"] { --card-color: rgba(91,212,155,0.10); }
 
-    /* 导航栏登录区�?*/
+    /* 导航栏登录区域 */
     .nav-auth {
       position: relative;
     }
@@ -360,7 +359,7 @@
       font-size: 0.88rem;
     }
 
-    /* ========== 响应�?========== */
+    /* ========== 响应式 ========== */
     @media (max-width: 900px) {
       .intro-card {
         grid-template-columns: 1fr;
@@ -383,11 +382,11 @@
 <!-- 背景 -->
 <div class="bg-stars" aria-hidden="true"></div>
 
-<!-- 导航�?-->
+<!-- 导航栏 -->
 <nav class="nav">
   <a class="nav-logo" href="index.html">
-    <img src="assets/images/club-logo.png" alt="悠行动漫�?>
-    <span>悠行动漫�?/span>
+    <img src="assets/images/club-logo.png" alt="悠行动漫社">
+    <span>悠行动漫社</span>
   </a>
   <button class="nav-toggle" id="navToggle" aria-label="菜单">
     <span></span><span></span><span></span>
@@ -397,9 +396,9 @@
     <li><a href="pages/about.html">社团介绍</a></li>
     <li><a href="pages/magazine.html">社刊</a></li>
     <li><a href="pages/activities.html">线下活动</a></li>
-    <li><a href="pages/anime-schedule.html">季番时间�?/a></li>
+    <li><a href="pages/anime-schedule.html">季番时间表</a></li>
     <li><button class="theme-toggle" id="themeToggle" aria-label="切换主题">
-      <span class="icon-moon">🌙</span><span class="icon-sun">☀�?/span>
+      <span class="icon-moon">🌙</span><span class="icon-sun">☀️</span>
     </button></li>
     <li class="nav-auth">
       <button id="auth-login-btn" class="btn btn-sm btn-primary">登录</button>
@@ -408,7 +407,7 @@
         <span id="auth-username" class="auth-username"></span>
         <div class="auth-dropdown">
           <div class="auth-dropdown-item" onclick="location.href='pages/profile.html'">个人中心</div>
-          <div class="auth-dropdown-item" id="auth-logout-btn">退出登�?/div>
+          <div class="auth-dropdown-item" id="auth-logout-btn">退出登录</div>
         </div>
       </div>
     </li>
@@ -417,26 +416,26 @@
 
 <div class="page-wrapper">
 
-  <!-- ===== 英雄�?===== -->
+  <!-- ===== 英雄区 ===== -->
   <section class="hero">
     <div class="hero-bg" id="heroBg"></div>
     <div class="hero-glow" aria-hidden="true"></div>
 
     <div class="hero-content">
-      <div class="hero-badge">�?悠行动漫�?�?/div>
+      <div class="hero-badge">✦ 悠行动漫社 ✦</div>
 
       <h1 class="hero-title">
         <span class="gradient-text">悠游世纪</span><br>
-        <span class="accent-text">一起同�?/span>
+        <span class="accent-text">一起同行</span>
       </h1>
 
       <p class="hero-subtitle">
         欢迎来到悠行动漫社的专属空间<br>
-        季番时间�?· 社刊回顾 · 活动记录，都在这�?
+        季番时间表 · 社刊回顾 · 活动记录，都在这里
       </p>
 
       <div class="hero-actions">
-        <a class="btn btn-primary" href="pages/anime-schedule.html">🎬 看本季新�?/a>
+        <a class="btn btn-primary" href="pages/anime-schedule.html">🎬 看本季新番</a>
         <a class="btn btn-ghost" href="pages/magazine.html">📖 浏览社刊</a>
       </div>
     </div>
@@ -451,71 +450,71 @@
   <section class="sections-area">
     <div class="section-header">
       <h2 class="section-title">社团功能</h2>
-      <p class="section-subtitle">点击进入各板�?/p>
+      <p class="section-subtitle">点击进入各板块</p>
     </div>
 
     <div class="nav-cards">
       <a class="nav-card fade-in" href="pages/about.html" data-color="blue" style="animation-delay:0.1s">
         <span class="nav-card-icon">🏮</span>
         <div class="nav-card-title">社团介绍</div>
-        <div class="nav-card-desc">了解悠行动漫社的成立历程、部门构成、高层名单以及社团文�?/div>
-        <span class="nav-card-arrow">�?/span>
+        <div class="nav-card-desc">了解悠行动漫社的成立历程、部门构成、高层名单以及社团文化</div>
+        <span class="nav-card-arrow">→</span>
       </a>
 
       <a class="nav-card fade-in" href="pages/magazine.html" data-color="purple" style="animation-delay:0.2s">
         <span class="nav-card-icon">📖</span>
-        <div class="nav-card-title">悠小咕快�?/div>
-        <div class="nav-card-desc">社刊《悠小咕快报》各期回顾，展示封面与精彩内容节�?/div>
-        <span class="nav-card-arrow">�?/span>
+        <div class="nav-card-title">悠小咕快报</div>
+        <div class="nav-card-desc">社刊《悠小咕快报》各期回顾，展示封面与精彩内容节选</div>
+        <span class="nav-card-arrow">→</span>
       </a>
 
       <a class="nav-card fade-in" href="pages/activities.html" data-color="green" style="animation-delay:0.3s">
         <span class="nav-card-icon">🎉</span>
         <div class="nav-card-title">线下活动</div>
-        <div class="nav-card-desc">迎新大会、元旦晚会等线下活动记录，留住每一段美好回�?/div>
-        <span class="nav-card-arrow">�?/span>
+        <div class="nav-card-desc">迎新大会、元旦晚会等线下活动记录，留住每一段美好回忆</div>
+        <span class="nav-card-arrow">→</span>
       </a>
 
       <a class="nav-card fade-in" href="pages/anime-schedule.html" data-color="orange" style="animation-delay:0.4s">
-        <span class="nav-card-icon">🗓�?/span>
-        <div class="nav-card-title">季番时间�?/div>
-        <div class="nav-card-desc">2026年春季新番一览，按星期整理，快速找到想追的�?/div>
-        <span class="nav-card-arrow">�?/span>
+        <span class="nav-card-icon">🗓️</span>
+        <div class="nav-card-title">季番时间表</div>
+        <div class="nav-card-desc">2026年春季新番一览，按星期整理，快速找到想追的番</div>
+        <span class="nav-card-arrow">→</span>
       </a>
     </div>
   </section>
 
-  <!-- ===== 社团简�?===== -->
+  <!-- ===== 社团简介 ===== -->
   <section class="intro-area">
     <div class="intro-card card fade-in">
       <div class="intro-text">
-        <h2>关于悠行动漫�?/h2>
+        <h2>关于悠行动漫社</h2>
         <p>
           <!-- 慕慕自行填写社团介绍内容 -->
-          这里是社团介绍文字，请自行修改填充。可以包括社团的成立背景、宗旨�?
-          主要活动形式等内容�?
+          这里是社团介绍文字，请自行修改填充。可以包括社团的成立背景、宗旨、
+          主要活动形式等内容。
         </p>
         <p>
-          这里可以继续补充第二段介绍文字，例如社团的特色、成就或展望�?
+          这里可以继续补充第二段介绍文字，例如社团的特色、成就或展望。
         </p>
-        <a class="btn btn-ghost" href="pages/about.html" style="margin-top: 16px;">了解更多 �?/a>
+        <a class="btn btn-ghost" href="pages/about.html" style="margin-top: 16px;">了解更多 →</a>
       </div>
 
       <div class="intro-stats">
         <div class="stat-item">
           <span class="stat-num">18+</span>
-          <div class="stat-label">届社团历�?/div>
+          <div class="stat-label">届社团历史</div>
         </div>
         <div class="stat-item">
           <span class="stat-num">20+</span>
-          <div class="stat-label">期社刊出�?/div>
+          <div class="stat-label">期社刊出版</div>
         </div>
         <div class="stat-item">
           <span class="stat-num">N+</span>
           <div class="stat-label">活跃成员</div>
         </div>
         <div class="stat-item">
-          <span class="stat-num">�?/span>
+          <span class="stat-num">∞</span>
           <div class="stat-label">热爱动漫</div>
         </div>
       </div>
@@ -531,18 +530,18 @@
     <div class="contact-grid">
       <div class="contact-item card">
         <div class="contact-item-icon">👥</div>
-        <div class="contact-item-label">QQ�?/div>
-        <div class="contact-item-value">（待填充�?/div>
+        <div class="contact-item-label">QQ群</div>
+        <div class="contact-item-value">（待填充）</div>
       </div>
       <div class="contact-item card">
         <div class="contact-item-icon">📧</div>
         <div class="contact-item-label">联系邮箱</div>
-        <div class="contact-item-value">（待填充�?/div>
+        <div class="contact-item-value">（待填充）</div>
       </div>
       <div class="contact-item card">
         <div class="contact-item-icon">📍</div>
         <div class="contact-item-label">活动地点</div>
-        <div class="contact-item-value">（待填充�?/div>
+        <div class="contact-item-value">（待填充）</div>
       </div>
     </div>
   </section>
@@ -551,8 +550,8 @@
 
 <!-- 页脚 -->
 <footer class="footer">
-  <p>© 2025�?026 悠行动漫社官方网�?&nbsp;|&nbsp; 感谢访问!</p>
-  <p style="margin-top: 6px;">�?橙の慕丶 建立&维护，由 Cloudflare 提供支持</p>
+  <p>© 2025–2026 悠行动漫社官方网站 &nbsp;|&nbsp; 感谢访问!</p>
+  <p style="margin-top: 6px;">由 橙の慕丶 建立&维护，由 Cloudflare 提供支持</p>
 </footer>
 
 <!-- 账号系统 -->
