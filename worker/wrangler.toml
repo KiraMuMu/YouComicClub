@@ -3,8 +3,8 @@ main = "auth.js"
 compatibility_date = "2024-01-01"
 
 [vars]
-FRONTEND_URL = "https://youclub.3144076132.workers.dev"
-BANGUMI_REDIRECT_URI = "https://youclub-auth.3144076132.workers.dev/api/auth/bangumi/callback"
+FRONTEND_URL = "https://youclub.kiramu.workers.dev"
+BANGUMI_REDIRECT_URI = "https://youclub-auth.kiramu.workers.dev/api/auth/bangumi/callback"
 
 # KV 命名空间（只需要1个，用key前缀区分）
 [[kv_namespaces]]
