@@ -8,12 +8,11 @@
   <link rel="stylesheet" href="../assets/css/style.css">
   <script src="../assets/js/theme.js"></script>
   <style>
-    .filter-bar {
+    /* 主内容区：限制最大宽度，左右留空 */
+    #mainContent {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 0 20px 80px;
-      position: relative;
-      z-index: 10;
+      padding: 0 24px;
     }
 
     /* 加载状态 */
@@ -54,11 +53,12 @@
 
     /* 筛选栏 */
     .filter-bar {
+      max-width: 1400px;
+      margin: 0 auto 28px;
       display: flex;
       gap: 12px;
       align-items: center;
       flex-wrap: wrap;
-      margin-bottom: 28px;
       padding: 16px 20px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
