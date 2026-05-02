@@ -9,13 +9,6 @@
   <script src="../assets/js/theme.js"></script>
   <script src="../data/magazine.js"></script>
   <style>
-    .page-hero {
-      padding: 60px 24px 40px;
-      text-align: center;
-      position: relative;
-      z-index: 10;
-    }
-
     /* 社刊logo + 标题 */
     .mag-header-logo {
       display: flex;
@@ -34,22 +27,6 @@
     @keyframes floatLogo {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-8px); }
-    }
-
-    .page-title {
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 900;
-      background: linear-gradient(135deg, #ffffff 0%, #a8d5ff 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .page-desc {
-      color: var(--text-muted);
-      max-width: 500px;
-      margin: 12px auto 0;
-      font-size: 0.95rem;
     }
 
     .content-area {
