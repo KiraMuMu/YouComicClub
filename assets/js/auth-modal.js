@@ -638,7 +638,10 @@ async function handleLogin() {
   setBtnLoading('login-submit-btn', false);
   if (result.success) {
     setMsg('login-msg', '登录成功！', 'ok');
-    setTimeout(() => auth.hideLoginModal(), 600);
+    setTimeout(() => {
+      auth.hideLoginModal();
+      window.location.reload(); // 刷新页面以更新状态
+    }, 600);
   } else {
     setMsg('login-msg', result.error || '登录失败，请检查用户名和密码', 'error');
     document.getElementById('login-password').classList.add('input-error');
@@ -687,11 +690,10 @@ async function handleRegister() {
   if (result.success) {
     setMsg('reg-step1-msg', '注册成功！正在登录...', 'ok');
     
-    // 注册成功后自动登录
+    // 注册成功后自动登录并刷新页面
     setTimeout(() => {
       auth.hideLoginModal();
-      // 触发登录成功后的回调
-      if (typeof onAuthSuccess === 'function') onAuthSuccess(result.user);
+      window.location.reload(); // 刷新页面以更新状态
     }, 800);
   } else {
     setMsg('reg-step1-msg', result.error || '注册失败，请稍后重试', 'error');

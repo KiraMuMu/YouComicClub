@@ -91,6 +91,7 @@ class AuthManager {
     this.user = null
     localStorage.removeItem('auth_token')
     this.updateUI()
+    window.location.reload() // 刷新页面以更新状态
   }
 
   // Bangumi OAuth 登录
