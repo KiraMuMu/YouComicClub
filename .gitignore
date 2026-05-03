@@ -25,3 +25,8 @@ desktop.ini
 tmp/
 temp/
 *.tmp
+
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
