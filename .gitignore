@@ -5,6 +5,7 @@ package-lock.json
 # Wrangler files
 .wrangler/
 wrangler.toml.bak
+wrangler.toml
 
 # OS files
 .DS_Store

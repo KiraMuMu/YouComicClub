@@ -5,7 +5,7 @@
 
 // ==================== 用户操作 ====================
 
-export async function createLocalUser(env, { username, password, email }) {
+export async function createLocalUser(env, { username, password }) {
   const id = crypto.randomUUID()
   const { hashPassword } = await import('./crypto.js')
   const passwordHash = await hashPassword(password)
@@ -13,7 +13,6 @@ export async function createLocalUser(env, { username, password, email }) {
   const user = {
     id,
     username,
-    email: email || null,
     passwordHash,
     avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`,
     createdAt: new Date().toISOString(),

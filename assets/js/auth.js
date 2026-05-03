@@ -35,40 +35,48 @@ class AuthManager {
     }
   }
 
-  // 注册
-  async register(username, password, email = '') {
-    const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password, email })
-    })
-    const data = await res.json()
-    if (data.success) {
-      this.token = data.token
-      this.user = data.user
-      localStorage.setItem('auth_token', this.token)
-      this.updateUI()
-      return { success: true }
+  // 注册（需要 Turnstile 验证）
+  async register(username, password, turnstileToken) {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, turnstileToken })
+      })
+      const data = await res.json()
+      if (data.success) {
+        this.token = data.token
+        this.user = data.user
+        localStorage.setItem('auth_token', this.token)
+        this.updateUI()
+        return { success: true }
+      }
+      return { success: false, error: data.error }
+    } catch (e) {
+      return { success: false, error: '网络错误，请稍后重试' }
     }
-    return { success: false, error: data.error }
   }
 
   // 登录
   async login(username, password) {
-    const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    })
-    const data = await res.json()
-    if (data.success) {
-      this.token = data.token
-      this.user = data.user
-      localStorage.setItem('auth_token', this.token)
-      this.updateUI()
-      return { success: true }
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+      const data = await res.json()
+      if (data.success) {
+        this.token = data.token
+        this.user = data.user
+        localStorage.setItem('auth_token', this.token)
+        this.updateUI()
+        return { success: true }
+      }
+      return { success: false, error: data.error }
+    } catch (e) {
+      return { success: false, error: '网络错误，请稍后重试' }
     }
-    return { success: false, error: data.error }
   }
 
   // 登出

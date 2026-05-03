@@ -1,6 +1,7 @@
 /**
- * YouComicClub 账号系统 Worker
+ * YouComicClub 账号系统 Worker v3.0
  * 支持：本地注册登录 + Bangumi OAuth
+ * 验证方式：Cloudflare Turnstile 人机验证（已移除邮件验证）
  */
 
 import { verifyJWT, signJWT, hashPassword, verifyPassword } from './crypto.js'
@@ -87,7 +88,7 @@ export default {
 // ==================== 本地账号 ====================
 
 async function handleRegister(request, env) {
-  const { username, password, email } = await request.json()
+  const { username, password, turnstileToken } = await request.json()
 
   if (!username || !password) {
     return corsResponse(JSON.stringify({ error: '用户名和密码不能为空' }), 400)
@@ -99,13 +100,19 @@ async function handleRegister(request, env) {
     return corsResponse(JSON.stringify({ error: '用户名长度2-20个字符' }), 400)
   }
 
+  // Turnstile 人机验证
+  const turnstileCheck = await verifyTurnstile(turnstileToken, env, request)
+  if (!turnstileCheck.success) {
+    return corsResponse(JSON.stringify({ error: turnstileCheck.error }), 400)
+  }
+
   // 检查用户名是否已存在
   const existing = await findLocalUserByUsername(env, username)
   if (existing) {
     return corsResponse(JSON.stringify({ error: '用户名已存在' }), 409)
   }
 
-  const user = await createLocalUser(env, { username, password, email })
+  const user = await createLocalUser(env, { username, password })
   const token = await signJWT({ userId: user.id, username: user.username }, env.JWT_SECRET)
 
   // 保存 session 到 KV
@@ -248,7 +255,7 @@ async function handleSaveAnime(request, env) {
 
   await saveAnimeStatus(env, user.id, {
     animeId,
-    status, // 'watching' | 'completed' | 'on_hold' | 'dropped' | 'plan_to_watch'
+    status,
     score: score || 0,
     progress: progress || 0,
     updatedAt: new Date().toISOString()
@@ -301,13 +308,46 @@ async function handleUpdateProfile(request, env) {
 
 // ==================== 工具函数 ====================
 
+// Turnstile 人机验证
+async function verifyTurnstile(token, env, request) {
+  if (!token) {
+    return { success: false, error: '请完成人机验证' }
+  }
+
+  try {
+    const formData = new FormData()
+    formData.append('secret', env.TURNSTILE_SECRET_KEY || '')
+    formData.append('response', token)
+
+    const clientIp = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For')
+    if (clientIp) {
+      formData.append('remoteip', clientIp)
+    }
+
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: formData
+    })
+
+    const data = await res.json()
+
+    if (!data.success) {
+      console.error('Turnstile verification failed:', data)
+      return { success: false, error: '人机验证失败，请重试' }
+    }
+
+    return { success: true }
+  } catch (err) {
+    console.error('Turnstile error:', err)
+    return { success: false, error: '人机验证服务异常，请稍后重试' }
+  }
+}
+
 function getTokenFromRequest(request) {
-  // 从 Authorization header
   const auth = request.headers.get('Authorization')
   if (auth?.startsWith('Bearer ')) {
     return auth.slice(7)
   }
-  // 从 cookie
   const cookie = request.headers.get('Cookie')
   if (cookie) {
     const match = cookie.match(/auth_token=([^;]+)/)
