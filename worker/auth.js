@@ -32,6 +32,15 @@ export default {
     }
 
     try {
+      // ===== 健康检查 =====
+      if (path === '/' && method === 'GET') {
+        return corsResponse(JSON.stringify({ 
+          status: 'ok', 
+          message: 'YouClub Auth API is running',
+          version: '3.0'
+        }), 200)
+      }
+
       // ===== 本地账号注册 =====
       if (path === '/api/auth/register' && method === 'POST') {
         return await handleRegister(request, env)
